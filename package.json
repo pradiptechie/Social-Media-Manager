@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/pradiptechie/Social-Media-Manager/issues"
   },
-  "homepage": "https://github.com/pradiptechie/Social-Media-Manager#readme"
+  "homepage": "https://github.com/pradiptechie/Social-Media-Manager#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "hbs": "^4.2.0"
+  }
 }
