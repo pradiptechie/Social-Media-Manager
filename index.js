@@ -14,6 +14,22 @@ app.get('/', (req, res) => {
   res.render('home', { title: 'Social Media Manager' });
 });
 
+app.get('/connect/facebook', (req, res) => {
+    res.send('Connecting with Facebook...');
+});
+
+app.get('/connect/instagram', (req, res) => {
+    res.send('Connecting with Instagram...');
+});
+
+app.get('/connect/x', (req, res) => {
+    res.send('Connecting with X...');
+});
+
+app.get('/connect/tiktok', (req, res) => {
+    res.send('Connecting with tiktok...');
+});
+
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
