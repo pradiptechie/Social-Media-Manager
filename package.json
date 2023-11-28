@@ -1,0 +1,19 @@
+{
+  "name": "social-media-manager",
+  "version": "1.0.0",
+  "description": "This Project aims to Manage multiple social media contents at a single place.",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pradiptechie/Social-Media-Manager.git"
+  },
+  "author": "Pradip Mahato",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pradiptechie/Social-Media-Manager/issues"
+  },
+  "homepage": "https://github.com/pradiptechie/Social-Media-Manager#readme"
+}
