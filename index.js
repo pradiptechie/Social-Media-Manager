@@ -13,6 +13,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
   res.render('home', { title: 'Social Media Manager' });
 });
+app.get('/fb', (req, res) => {
+  res.render('fb', { title: 'Social Media Manager' });
+});
 
 app.get('/connect/facebook', (req, res) => {
     res.send('Connecting with Facebook...');

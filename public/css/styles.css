@@ -1,5 +1,4 @@
 
-
 body {
   font-family: 'Arial', sans-serif;
   background-color: #f4f4f4;
@@ -28,7 +27,6 @@ button {
   transition: background-color 0.3s ease;
 }
 
-/* Different button colors for variety */
 button.facebook {
   background-color: #3b5998;
   color: #fff;
