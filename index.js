@@ -21,18 +21,14 @@ app.get('/', (req, res) => {
 // -----------------------------
 
 app.use(session({
-  secret: 'ZvPv5yEdFPiP9odi77UmmmydGqnyEfcxVnEs3dmxnPhTcDUreb',
+  secret: 'in env TODO',
   resave: true,
   saveUninitialized: true
 }));
 
 
 const twitterClient = new Twit({
-  consumer_key: 'Hqd3ztRQekdAVkADD92aGevim',
-  consumer_secret: 'ZvPv5yEdFPiP9odi77UmmmydGqnyEfcxVnEs3dmxnPhTcDUreb',
-  access_token: '1337604392548065284-5wcPh4iO3Sf01M4HAMQ8NY4JziwpQF',
-  access_token_secret: 'HI8nniUbOsBeZN7Zol3W4mUiYRgahDAPlcXrI8MEwZwxs',
-  callback: '/callback' // Update with your callback URL
+  // in env
 });
 
 app.get('/connect/x', (req, res) => {
