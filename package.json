@@ -17,7 +17,14 @@
   },
   "homepage": "https://github.com/pradiptechie/Social-Media-Manager#readme",
   "dependencies": {
+    "axios": "^1.6.2",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "hbs": "^4.2.0"
+    "express-handlebars": "^7.1.2",
+    "express-session": "^1.17.3",
+    "har-validator": "^5.1.5",
+    "hbs": "^4.2.0",
+    "twit": "^1.1.20",
+    "uuid": "^9.0.1"
   }
 }

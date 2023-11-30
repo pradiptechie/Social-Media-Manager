@@ -10,33 +10,12 @@
 <body>
   <h1>{{ title }}</h1>
 
-
-  <div class="social-buttons">
-    <button onclick="initializeFacebookAndConnect()" class="facebook">Connect with Facebook</button>
-  </div>
-
-  <div class="social-buttons">
-    <a href="/connect/instagram">
-      <button class="instagram">Connect with Instagram</button>
-    </a>
-  </div>
-
   <div class="social-buttons">
     <a href="/connect/x">
-      <button class="x">Connect with X</button>
+      <button onclick="requestToken()" class="x">Connect with X</button>
     </a>
   </div>
 
-  <div class="social-buttons">
-    <a href="/connect/tiktok">
-      <button class="tiktok">Connect with TikTok</button>
-    </a>
-  </div>
-
-
-  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
-  <script src="/js/facebook.js"></script>
+  <script src="/js/x.js"></script>
 </body>
-</body>
-
 </html>
