@@ -68,6 +68,7 @@ app.get('/login', async (req, res) => {
   }
 });
 
+// after login done---------------------------------
 app.get('/callback', async (req, res) => {
   const oauthToken = req.query.oauth_token;
   const oauthVerifier = req.query.oauth_verifier;
@@ -108,7 +109,8 @@ app.get('/callback', async (req, res) => {
   }
 });
 
-
+// making twitt---------------------------------
+// TODO: make a input field for twitt text and than submit
 app.get('/post-tweet', async (req, res) => {
   if (!req.session.access_token || !req.session.access_token_secret) {
     return res.status(401).send('User not authenticated');
@@ -125,7 +127,7 @@ app.get('/post-tweet', async (req, res) => {
   }, token));
 
   try {
-    const tweetText = 'Hello, Twitter! This is post 3';
+    const tweetText = 'Hello, Twitter! This is final test';
     const tweetResponse = await axios.post(
       'https://api.twitter.com/2/tweets',
       { text: tweetText },
