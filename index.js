@@ -127,7 +127,7 @@ app.get('/post-tweet', async (req, res) => {
   }, token));
 
   try {
-    const tweetText = 'Hello, Twitter! This is final test';
+    const tweetText = 'Hello, Twitter! This is final test 3';
     const tweetResponse = await axios.post(
       'https://api.twitter.com/2/tweets',
       { text: tweetText },
