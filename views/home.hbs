@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ title }}</title>
-  <link rel="stylesheet" href="/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
 </head>
 <body>
-  <h1>{{ title }}</h1>
 
-  <div class="social-buttons">
-    <a href="/connect/x">
-      <button onclick="requestToken()" class="x">Connect with X</button>
+    <h1>{{ title }}</h1>
+
+    <p>Welcome to the Social Media Manager app!</p>
+
+    {{!-- Add a button to initiate Twitter authentication --}}
+    <a href="/login">
+        <button>Login with Twitter</button>
     </a>
-  </div>
 
-  <script src="/js/x.js"></script>
 </body>
 </html>
