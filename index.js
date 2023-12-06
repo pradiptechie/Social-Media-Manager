@@ -42,31 +42,70 @@ app.get('/', (req, res) => {
 
 //-------------------working --------------------
 
+// app.get('/login', async (req, res) => {
+//   try {
+//     const authHeader = oauth.toHeader(oauth.authorize({
+//       url: requestTokenURL,
+//       method: 'POST'
+//     }));
+
+//     const requestTokenResponse = await axios.post(requestTokenURL, null, {
+//       headers: { Authorization: authHeader['Authorization'] }
+//     });
+
+//     const requestTokenData = qs.parse(requestTokenResponse.data);
+//     req.session.oauth_token_secret = requestTokenData.oauth_token_secret;
+
+//     authorizeURL.searchParams.append('oauth_token', requestTokenData.oauth_token);
+//     console.log("Success Obtaining Access");
+//     res.redirect(authorizeURL.href);
+//   } catch (error) {
+//     console.error('Error obtaining request token:', error.message);
+//     console.error('Response data:', error.response && error.response.data);
+//     console.error('Response status:', error.response && error.response.status);
+//     console.error('Response headers:', error.response && error.response.headers);
+//     res.status(500).send('Error obtaining request token');
+//   }
+// });
+
+
 app.get('/login', async (req, res) => {
   try {
+    // Step 1: Generate OAuth header for obtaining a temporary request token
     const authHeader = oauth.toHeader(oauth.authorize({
       url: requestTokenURL,
       method: 'POST'
     }));
 
+    // Step 2: Make a POST request to obtain the temporary request token
     const requestTokenResponse = await axios.post(requestTokenURL, null, {
       headers: { Authorization: authHeader['Authorization'] }
     });
 
+    // Step 3: Parse the response and save temporary request token and secret in the session
     const requestTokenData = qs.parse(requestTokenResponse.data);
     req.session.oauth_token_secret = requestTokenData.oauth_token_secret;
 
+    // Step 4: Build the authorization URL for user authentication
     authorizeURL.searchParams.append('oauth_token', requestTokenData.oauth_token);
+
+    // Optional: Log success message
     console.log("Success Obtaining Access");
+
+    // Step 5: Redirect the user to Twitter for authorization
     res.redirect(authorizeURL.href);
   } catch (error) {
+    // Step 6: Handle errors and log relevant information
     console.error('Error obtaining request token:', error.message);
     console.error('Response data:', error.response && error.response.data);
     console.error('Response status:', error.response && error.response.status);
     console.error('Response headers:', error.response && error.response.headers);
+
+    // Step 7: Respond with a 500 status if there's an error obtaining the request token
     res.status(500).send('Error obtaining request token');
   }
 });
+
 
 // after login done---------------------------------
 app.get('/callback', async (req, res) => {
@@ -111,6 +150,7 @@ app.get('/callback', async (req, res) => {
 
 // making twitt---------------------------------
 // TODO: make a input field for twitt text and than submit
+
 app.get('/post-tweet', async (req, res) => {
   if (!req.session.access_token || !req.session.access_token_secret) {
     return res.status(401).send('User not authenticated');
@@ -127,7 +167,7 @@ app.get('/post-tweet', async (req, res) => {
   }, token));
 
   try {
-    const tweetText = 'Hello, Twitter! This is final test 3';
+    const tweetText = 'Hello, Twitter! This is final test 6';
     const tweetResponse = await axios.post(
       'https://api.twitter.com/2/tweets',
       { text: tweetText },
@@ -148,6 +188,44 @@ app.get('/post-tweet', async (req, res) => {
     res.status(500).send('Error posting tweet');
   }
 });
+
+
+// -----------tweet taking input text---------------------
+
+// app.post('/post-tweet', async (req, res) => {
+//   if (!req.session.access_token || !req.session.access_token_secret) {
+//     return res.status(401).send('User not authenticated');
+//   }
+
+//   const token = {
+//     key: req.session.access_token,
+//     secret: req.session.access_token_secret
+//   };
+
+//   const authHeader = oauth.toHeader(oauth.authorize({
+//     url: endpointURL,
+//     method: 'POST'
+//   }, token));
+
+//   const tweetText = req.body.tweetText;
+
+//   try {
+//     const tweetResponse = await axios.post(endpointURL, { text: tweetText }, {
+//       headers: {
+//         Authorization: authHeader['Authorization'],
+//         'user-agent': 'v2CreateTweetJS',
+//         'content-type': 'application/json',
+//         'accept': 'application/json'
+//       }
+//     });
+
+//     res.status(200).json(tweetResponse.data);
+//   } catch (error) {
+//     console.error('Error posting tweet:', error);
+//     res.status(500).send('Error posting tweet');
+//   }
+// });
+
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

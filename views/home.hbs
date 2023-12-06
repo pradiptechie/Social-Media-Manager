@@ -4,6 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Style the login button */
+        a button {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        /* Style the tweet form */
+        form {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        label {
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        input {
+            padding: 8px;
+            font-size: 16px;
+            width: 300px;
+            margin-right: 10px;
+        }
+
+        /* Style the tweet button */
+        form button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        form button:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>
 
@@ -11,10 +85,15 @@
 
     <p>Welcome to the Social Media Manager app!</p>
 
-    {{!-- Add a button to initiate Twitter authentication --}}
     <a href="/login">
         <button>Login with Twitter</button>
     </a>
+
+    {{!-- <form action="/post-tweet" method="post">
+        <label for="tweetText">Tweet:</label>
+        <input type="text" id="tweetText" name="tweetText" required>
+        <button type="submit">Tweet</button>
+    </form> --}}
 
 </body>
 </html>
