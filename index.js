@@ -283,8 +283,8 @@ app.get('/facebook', (req, res) => {
 //     // Exchange the code for an access token
 //     const accessTokenResponse = await axios.get('https://graph.facebook.com/v18.0/oauth/access_token', {
 //       params: {
-//         client_id: '312166578405820',
-//         client_secret: 'ac70deb93a2c3edf8e90c26412a69ed3',
+//         client_id: process.env.FBAppID,
+//         client_secret: process.env.FBAppSecret,
 //         redirect_uri: 'http://localhost:3000/facebook/callback',
 //         code,
 //       },
