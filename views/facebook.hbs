@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Login JavaScript Example</title>
+    <style>
+        #spinner {
+            margin-top: 20%;
+            margin-left: 40%;
+            background: #4267b2;
+            border-radius: 5px;
+            color: white;
+            height: 40px;
+            text-align: center;
+            width: 250px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="spinner">
+    <div class="fb-login-button"
+        data-max-rows="1"
+        data-size="large"
+        data-button-type="continue_with"
+        data-use-continue-as="true"
+        onlogin="checkLoginState();">
+    </div>
+</div>
+
+<div id="status"></div>
+
+<script>
+    function statusChangeCallback(response) {
+        console.log('statusChangeCallback', response);
+        if (response.status === 'connected') {
+            testAPI();
+        } else {
+            document.getElementById('status').innerHTML = 'Please log into this webpage.';
+        }
+    }
+
+    function checkLoginState() {
+        FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+        });
+    }
+
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId: '312166578405820', // Replace with your actual Facebook App ID
+            cookie: true,
+            xfbml: true,
+            version: 'v18.0'
+        });
+
+        FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+        });
+    };
+
+
+function statusChangeCallback(response) {
+    console.log('statusChangeCallback', response);
+    if (response.status === 'connected') {
+        testAPI();
+    } else {
+        document.getElementById('status').innerHTML = 'Please log into this webpage.';
+    }
+}
+
+function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+    });
+}
+
+
+
+function testAPI() {
+    console.log('Welcome! Fetching your information....');
+    FB.api('/me', function(response) {
+        console.log('Successful login for: ' + response.name);
+        console.log('Successful login for: ' + response.id);
+
+        if (response.authResponse && response.authResponse.accessToken) {
+            console.log('Successful login for: ' + response.authResponse.accessToken);
+            
+            document.getElementById('status').innerHTML = 'Thanks for logging in, ' + response.name + '!';
+
+            // Now, you can send the access token to your backend for further processing
+            // For simplicity, you can use AJAX to make a request to your backend
+            fetch('/facebook/callback?code=' + response.authResponse.accessToken)
+                .then(response => response.text())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error sending access token to backend:', error));
+        } else {
+            console.error('Error: authResponse or accessToken is undefined in the response');
+        }
+    });
+}
+
+</script>
+
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+</body>
+</html>

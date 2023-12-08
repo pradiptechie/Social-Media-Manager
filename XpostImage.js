@@ -87,15 +87,7 @@ async function postTweetWithMedia(token, tweetText, mediaId) {
     }, token),
   );
 
-//   const tweetData = 
-//   {
-//     status: tweetText,
-//     media_ids: [mediaId]
-//   };
-
   const tweetData = {"text": tweetText, "media": {"media_ids": [mediaId]}}
-
-//   { status: tweetText, media_ids: [mediaId] };
 
   try {
     // Make a POST request to post the tweet with the uploaded media
