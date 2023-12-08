@@ -276,45 +276,58 @@ app.get('/facebook', (req, res) => {
   res.render('facebook', { title: 'Social Media Manager' });
 });
 
-app.get('/facebook/callback', async (req, res) => {
+// app.get('/facebook/callback', async (req, res) => {
+//   try {
+//     const { code } = req.query;
+
+//     // Exchange the code for an access token
+//     const accessTokenResponse = await axios.get('https://graph.facebook.com/v18.0/oauth/access_token', {
+//       params: {
+//         client_id: '312166578405820',
+//         client_secret: 'ac70deb93a2c3edf8e90c26412a69ed3',
+//         redirect_uri: 'http://localhost:3000/facebook/callback',
+//         code,
+//       },
+//     });
+
+//     const accessToken = accessTokenResponse.data.access_token;
+
+//     // Log the access token
+//     console.log('Access Token:', accessToken);
+
+//     // Use the access token to get user information
+//     const userInfoResponse = await axios.get('https://graph.facebook.com/v18.0/me', {
+//       params: {
+//         fields: 'id,name,email', // Specify the fields you need
+//         access_token: accessToken,
+//       },
+//     });
+
+//     const userInfo = userInfoResponse.data;
+
+//     // Log user information
+//     console.log('User Information:', userInfo);
+
+//     // Here, you can use userInfo to authenticate the user in your system or perform other actions
+//     console.log('Authenticated User:', userInfo.name);
+
+//     // Return a response to the client
+//     res.send(`Welcome, ${userInfo.name}!`);
+//   } catch (error) {
+//     console.error('Error during Facebook login callback:', error);
+//     res.status(500).send('Internal Server Error');
+//   }
+// });
+
+
+app.get('/facebook/simplified-callback', (req, res) => {
   try {
-    const { code } = req.query;
+      const { accessToken } = req.query;
 
-    // Exchange the code for an access token
-    const accessTokenResponse = await axios.get('https://graph.facebook.com/v18.0/oauth/access_token', {
-      params: {
-        client_id: '312166578405820',
-        client_secret: 'ac70deb93a2c3edf8e90c26412a69ed3',
-        redirect_uri: 'http://localhost:3000/facebook/callback',
-        code,
-      },
-    });
-
-    const accessToken = accessTokenResponse.data.access_token;
-
-    // Log the access token
-    console.log('Access Token:', accessToken);
-
-    // Use the access token to get user information
-    const userInfoResponse = await axios.get('https://graph.facebook.com/v18.0/me', {
-      params: {
-        fields: 'id,name,email', // Specify the fields you need
-        access_token: accessToken,
-      },
-    });
-
-    const userInfo = userInfoResponse.data;
-
-    // Log user information
-    console.log('User Information:', userInfo);
-
-    // Here, you can use userInfo to authenticate the user in your system or perform other actions
-    console.log('Authenticated User:', userInfo.name);
-
-    // Return a response to the client
-    res.send(`Welcome, ${userInfo.name}!`);
+      // Simple response for testing
+      res.send(`Received access token: ${accessToken}`);
   } catch (error) {
-    console.error('Error during Facebook login callback:', error);
-    res.status(500).send('Internal Server Error');
+      console.error('Error during simplified Facebook callback:', error);
+      res.status(500).send('Internal Server Error');
   }
 });
