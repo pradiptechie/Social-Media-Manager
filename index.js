@@ -320,12 +320,12 @@ app.get('/facebook', (req, res) => {
 // });
 
 
-app.get('/facebook/simplified-callback', (req, res) => {
+app.get('/facebook/callback', (req, res) => {
   try {
-      const { accessToken } = req.query;
+      const { code } = req.query;
 
       // Simple response for testing
-      res.send(`Received access token: ${accessToken}`);
+      res.send(`Received access token: ${code}`);
   } catch (error) {
       console.error('Error during simplified Facebook callback:', error);
       res.status(500).send('Internal Server Error');
