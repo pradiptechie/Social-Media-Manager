@@ -54,53 +54,28 @@
             xfbml: true,
             version: 'v18.0'
         });
-
         FB.getLoginStatus(function(response) {
             statusChangeCallback(response);
         });
     };
 
-
-function statusChangeCallback(response) {
-    console.log('statusChangeCallback', response);
-    if (response.status === 'connected') {
-        testAPI();
-    } else {
-        document.getElementById('status').innerHTML = 'Please log into this webpage.';
-    }
-}
-
-function checkLoginState() {
-    FB.getLoginStatus(function(response) {
-        statusChangeCallback(response);
-    });
-}
-
-
-
-function testAPI() {
-    console.log('Welcome! Fetching your information....');
-    FB.api('/me', function(response) {
-        console.log('Successful login for: ' + response.name);
-        console.log('Successful login for: ' + response.id);
-
-        if (response.authResponse && response.authResponse.accessToken) {
-            console.log('Successful login for: ' + response.authResponse.accessToken);
-            
+    function testAPI() {
+        console.log('Welcome! Fetching your information....');
+        FB.api('/me', function(response) {
+            console.log('Successful login for: ' + response.name);
+            console.log('Successful login for: ' + response.id);
+            console.log('Successful login for: ' + response.accessToken);
             document.getElementById('status').innerHTML = 'Thanks for logging in, ' + response.name + '!';
 
-            // Now, you can send the access token to your backend for further processing
+            // Now, you can send the authorization code to your backend for further processing
             // For simplicity, you can use AJAX to make a request to your backend
-            fetch('/facebook/callback?code=' + response.authResponse.accessToken)
-                .then(response => response.text())
-                .then(data => console.log(data))
-                .catch(error => console.error('Error sending access token to backend:', error));
-        } else {
-            console.error('Error: authResponse or accessToken is undefined in the response');
-        }
-    });
-}
+            fetch('/facebook/callback?code=' + response.authResponse.code)
+            .then(response => response.text())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error sending authorization code to backend:', error));
 
+        });
+    }
 </script>
 
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
