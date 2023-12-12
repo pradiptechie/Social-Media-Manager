@@ -10,6 +10,10 @@ const qs = require('querystring');
 const fs = require('fs');
 const FormData = require('form-data');
 
+// const { LoginManager, AccessToken } = require('react-native-fbsdk-next');
+
+
+
 const app = express();
 const port = 3000;
 
@@ -22,14 +26,12 @@ app.set('debug', true); // Enable debug logging
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-  secret: process.env.SESSION_SECRET || crypto.randomBytes(64).toString('hex'), // Use environment variable or generate a random string
+  secret: process.env.SESSION_SECRET || crypto.randomBytes(64).toString('hex'), 
   resave: true,
   saveUninitialized: true
 }));
 
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
-});
+
 
 
 
@@ -276,43 +278,41 @@ app.get('/facebook', (req, res) => {
   res.render('facebook', { title: 'Social Media Manager' });
 });
 
+
+const postTestPost = async () => {
+  try {
+    const response = await axios.post('http://localhost:3000/facebook/post');
+    console.log('Post request successful:', response.data);
+  } catch (error) {
+    console.error('Error making post request:', error.message);
+  }
+};
+
+// working- generating long access token  ................
 // app.get('/facebook/callback', async (req, res) => {
 //   try {
 //     const { code } = req.query;
 
-//     // Exchange the code for an access token
-//     const accessTokenResponse = await axios.get('https://graph.facebook.com/v18.0/oauth/access_token', {
+//     // Exchange the short-lived code for a long-lived access token
+//     const exchangeTokenResponse = await axios.get('https://graph.facebook.com/v18.0/oauth/access_token', {
 //       params: {
 //         client_id: process.env.FBAppID,
 //         client_secret: process.env.FBAppSecret,
 //         redirect_uri: 'http://localhost:3000/facebook/callback',
-//         code,
+//         grant_type: 'fb_exchange_token',
+//         fb_exchange_token: code,
 //       },
 //     });
 
-//     const accessToken = accessTokenResponse.data.access_token;
+//     const longLivedAccessToken = exchangeTokenResponse.data.access_token;
 
-//     // Log the access token
-//     console.log('Access Token:', accessToken);
+//     // Log the long-lived access token
+//     console.log('Long-Lived Access Token:', longLivedAccessToken);
 
-//     // Use the access token to get user information
-//     const userInfoResponse = await axios.get('https://graph.facebook.com/v18.0/me', {
-//       params: {
-//         fields: 'id,name,email', // Specify the fields you need
-//         access_token: accessToken,
-//       },
-//     });
+//     // TODO: Use the long-lived access token to get user information or perform other actions
+  
 
-//     const userInfo = userInfoResponse.data;
-
-//     // Log user information
-//     console.log('User Information:', userInfo);
-
-//     // Here, you can use userInfo to authenticate the user in your system or perform other actions
-//     console.log('Authenticated User:', userInfo.name);
-
-//     // Return a response to the client
-//     res.send(`Welcome, ${userInfo.name}!`);
+//     res.send(`Welcome! Long-Lived Access Token: ${longLivedAccessToken}`);
 //   } catch (error) {
 //     console.error('Error during Facebook login callback:', error);
 //     res.status(500).send('Internal Server Error');
@@ -320,14 +320,75 @@ app.get('/facebook', (req, res) => {
 // });
 
 
-app.get('/facebook/callback', (req, res) => {
-  try {
-      const { code } = req.query;
 
-      // Simple response for testing
-      res.send(`Received access token: ${code}`);
+
+
+
+
+
+
+
+
+
+app.get('/facebook/callback', async (req, res) => {
+  try {
+    const { code } = req.query;
+
+    // Exchange the short-lived code for a long-lived access token
+    const exchangeTokenResponse = await axios.get('https://graph.facebook.com/v18.0/oauth/access_token', {
+      params: {
+        client_id: process.env.FBAppID,
+        client_secret: process.env.FBAppSecret,
+        redirect_uri: 'http://localhost:3000/facebook/callback',
+        grant_type: 'fb_exchange_token',
+        fb_exchange_token: code, // Use the short-lived code here
+      },
+    });
+
+    const longLivedAccessToken = exchangeTokenResponse.data.access_token;
+
+    // Log the long-lived access token
+    console.log('Long-Lived Access Token:', longLivedAccessToken);
+
+    // Request publish permissions during login
+    const publishPermissionsResult = await axios.post('https://graph.facebook.com/v18.0/me/permissions', null, {
+      params: {
+        access_token: longLivedAccessToken,
+        permissions: 'pages_manage_posts', // Specify the permission you want to request
+      },
+    });
+
+    // Check if the permission is granted
+    if (publishPermissionsResult.data.data && publishPermissionsResult.data.data[0].status === 'granted') {
+      console.log('Permission granted:', publishPermissionsResult.data.data[0].permission);
+
+      // TODO: Use the long-lived access token to get user information or perform other actions
+
+      // Example: Create a test post on the user's Facebook profile
+      const postData = {
+        message: 'Hello, Facebook! This is a test post from the backend.',
+      };
+
+      const postResponse = await axios.post(
+        `https://graph.facebook.com/v18.0/me/feed?access_token=${longLivedAccessToken}`,
+        postData
+      );
+
+      // Log the post response
+      console.log('Post created:', postResponse.data);
+
+      res.send('Post created successfully.');
+    } else {
+      console.log('Permission not granted');
+      res.send('Permission not granted.');
+    }
   } catch (error) {
-      console.error('Error during simplified Facebook callback:', error);
-      res.status(500).send('Internal Server Error');
+    console.error('Error during Facebook login callback:', error);
+    res.status(500).send('Internal Server Error');
   }
+});
+
+
+app.listen(port, () => {
+  console.log(`Server is running at http://localhost:${port}`);
 });

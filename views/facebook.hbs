@@ -59,24 +59,21 @@
         });
     };
 
+
+
     function testAPI(res) {
-         
+    console.log('Welcome! Fetching your information....');
+    FB.api('/me', function(response) {
+        console.log('Successful login for: ' + response.name);
 
-        console.log('Welcome! Fetching your information....');
-        FB.api('/me', function(response) {
-         
-         console.log('**response **');
-            console.log(res.authResponse.accessToken);
+        // Send the short-lived access token to your backend for exchange
+        fetch('/facebook/callback?code=' + res.authResponse.accessToken)
+            .then(response => response.text())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error sending authorization code to backend:', error));
+    });
+}
 
-            // Now, you can send the authorization code to your backend for further processing
-            // For simplicity, you can use AJAX to make a request to your backend
-            fetch('/facebook/callback?code=' + res.authResponse.accessToken)
-        .then(response => response.text())
-        .then(data => console.log(data))
-        .catch(error => console.error('Error sending authorization code to backend:', error));
-
-        });
-    }
 </script>
 
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
