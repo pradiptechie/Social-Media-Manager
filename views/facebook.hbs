@@ -29,6 +29,11 @@
     </div>
 </div>
 
+<div id="user-info">
+  <p>Welcome, <span id="user-name"></span>!</p>
+  <button onclick="logout()">Logout</button>
+</div>
+
 <div id="status"></div>
 
 <script>
@@ -62,18 +67,27 @@
 
 
     function testAPI(res) {
-    console.log('Welcome! Fetching your information....');
-    FB.api('/me', function(response) {
-        console.log('Successful login for: ' + response.name);
+        console.log('Welcome! Fetching your information....');
+        FB.api('/me', function(response) {
+            console.log('Successful login for: ' + response.name);
 
-        // Send the short-lived access token to your backend for exchange
-        fetch('/facebook/callback?code=' + res.authResponse.accessToken)
-            .then(response => response.text())
-            .then(data => console.log(data))
-            .catch(error => console.error('Error sending authorization code to backend:', error));
-    });
-}
+            // Send the short-lived access token to your backend for exchange
+            fetch('/facebook/callback?code=' + res.authResponse.accessToken)
+                .then(response => response.text())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error sending authorization code to backend:', error));
+        });
 
+        document.getElementById('user-name').innerText = response.name;
+        document.getElementById('user-info').style.display = 'block';
+    }
+
+
+    function logout() {
+    // Clear user session and reload the page or redirect
+    fetch('/logout')
+        .then(() => window.location.reload());
+    }
 </script>
 
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
